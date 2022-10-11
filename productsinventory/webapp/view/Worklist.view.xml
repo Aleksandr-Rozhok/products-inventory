@@ -1,0 +1,74 @@
+<mvc:View controllerName="products.inventory.productsinventory.controller.Worklist" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.f.semantic">
+    <semantic:SemanticPage id="page" headerPinnable="false" toggleHeaderOnTitleClick="false">
+        <semantic:titleHeading>
+            <Title id="_IDGenTitle1" text="{i18n>worklistTitle}" level="H2" />
+        </semantic:titleHeading>
+
+        <semantic:content>
+            <VBox id="_IDGenVBox1">
+                <IconTabBar id="iconTabBar" select=".onFilterSelect" class="sapUiResponsiveContentPadding">
+                    <items>
+                        <IconTabFilter id="_IDGenIconTabFilter1" showAll="true" count="{worklistView>/productsCount}" text="{i18n>worklistFilterAllProducts}" key="all" />
+                        <IconTabSeparator id="_IDGenIconTabSeparator1" />
+                        <IconTabFilter id="_IDGenIconTabFilter2" icon="sap-icon://complete" iconColor="Positive" text="{i18n>worklistFilterNormalStockProducts}" key="Normal" />
+                        <IconTabFilter id="_IDGenIconTabFilter3" icon="sap-icon://message-warning" iconColor="Critical" text="{i18n>worklistFilterLowStockProducts}" key="Low" />
+                        <IconTabFilter id="_IDGenIconTabFilter4" icon="sap-icon://message-error" iconColor="Negative" text="{i18n>worklistFilterShortageStockProducts}" key="Shortage" />
+                    </items>
+                </IconTabBar>
+                <Table
+                    id="table"
+                    width="auto"
+                    items="{
+                    path: '/Products',
+                    sorter: {
+                        path: 'ProductName',
+                        descending: false
+                    }
+                }"
+                    noDataText="{worklistView>/tableNoDataText}"
+                    busyIndicatorDelay="{worklistView>/tableBusyDelay}"
+                    growing="true"
+                    growingScrollToLoad="true"
+                    updateFinished=".onUpdateFinished"
+                >
+                    <headerToolbar>
+                        <OverflowToolbar id="_IDGenOverflowToolbar1">
+                            <Title id="tableHeader" text="{worklistView>/worklistTableTitle}" level="H3" />
+                            <ToolbarSpacer id="_IDGenToolbarSpacer1" />
+                            <SearchField id="searchField" tooltip="{i18n>worklistSearchTooltip}" search=".onSearch">
+                                <layoutData>
+                                    <OverflowToolbarLayoutData id="_IDGenOverflowToolbarLayoutData1" maxWidth="200px" priority="NeverOverflow" />
+                                </layoutData>
+                            </SearchField>
+                        </OverflowToolbar>
+                    </headerToolbar>
+
+                    <columns>
+                        <Column id="nameColumn">
+                            <Text text="{i18n>tableNameColumnTitle}" id="nameColumnTitle" />
+                        </Column>
+                        <Column id="unitNumberColumn" hAlign="End">
+                            <Text text="{i18n>tableUnitNumberColumnTitle}" id="unitNumberColumnTitle" />
+                        </Column>
+                    </columns>
+
+                    <items>
+                        <ColumnListItem id="_IDGenColumnListItem1" type="Navigation" press=".onPress">
+                            <cells>
+                                <ObjectIdentifier id="_IDGenObjectIdentifier1" title="{ProductName}" />
+                                <ObjectNumber id="_IDGenObjectNumber1" number="{
+                                    path: 'UnitPrice',
+                                    formatter: '.formatter.numberUnit'
+                                }" unit="{QuantityPerUnit}" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </VBox>
+        </semantic:content>
+
+        <semantic:sendEmailAction>
+            <semantic:SendEmailAction id="shareEmail" press=".onShareEmailPress" />
+        </semantic:sendEmailAction>
+    </semantic:SemanticPage>
+</mvc:View>
